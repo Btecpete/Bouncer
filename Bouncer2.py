@@ -4,6 +4,9 @@
 #This program will graphically represent the effects of any uncertainty in the motion 
 # of a projectile leaving a tube at a fixed height and angle.
 
+'''This program is different to Bouncer 1 because it assumes that e, theta and h2 are constant
+throughout a run. This is a more correct assumption, and it also gives 27 values, instead of the
+177000 odd from Bouncer1.'''
 
 import math
 import numpy as np
