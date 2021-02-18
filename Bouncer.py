@@ -4,6 +4,8 @@
 #This program will graphically represent the effects of any uncertainty in the motion 
 # of a projectile leaving a tube at a fixed height and angle.
 
+'''This program is inaccurate, as it assumes that the values of theta, e, and h2 can vary mid-run.
+It has been updated with Bouncer2.py, and the more customisable Bouncer3.py'''
 
 import math
 import numpy as np
@@ -41,18 +43,21 @@ vs = []
 for theta in thetas:
     h2 = math.sin(theta)
     vs.append(math.sqrt((10/7)*g*h2))
+print('vs' + str(len(vs)))
 
 #Creates possible values of ux
 uxs = []
 for u in vs:
     for theta in thetas:
         uxs.append(u*math.cos(theta))
+print('uxs' + str(len(uxs)))
 
 #Creates possible values of uy
 uys = []
 for u in vs:
     for theta in thetas:
         uys.append(u*math.sin(theta))
+print('uys' + str(len(uys)))
 
 #Creates list of possible t1s
 t1s = []
@@ -60,12 +65,14 @@ for vy in uys:
     for h in h2s:
         t = (-vy + math.sqrt((vy**2) - 4 * (g/2) * (-h)))/(2 * (g/2))
         t1s.append(t)
+print('t1s' + str(len(t1s)))
 
 #Creates list of b1s
 b1s = []
 for t1 in t1s:
     for ux in uxs:
         b1s.append(t1*ux)
+print('b1s' + str(len(b1s)))
 
 #Creates list of Vya, vy after 1st impact
 vyas = []
@@ -74,11 +81,13 @@ for e in es:
         for h2 in h2s:
             vyb = math.sqrt((uy**2) + 2 * g * h2)
             vyas.append(vyb * e)
+print('vyas' + str(len(vyas)))
 
 #Creates a list of t2s
 t2s = []
 for vya in vyas:
     t2s.append(2 * (vya/g))
+print('t2s' + str(len(t2s)))
 
 #Finally, creates list of Ds
 Ds = []
@@ -88,6 +97,7 @@ for b1 in b1s:
             b2 = t2 * ux
             D = b1 + b2
             Ds.append(D)
+print('Ds' + str(len(Ds)))
 
 #Stores the actual number of possibilities:
 num_Ds = len(Ds)

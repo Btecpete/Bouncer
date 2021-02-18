@@ -4,10 +4,18 @@
 #This program will graphically represent the effects of any uncertainty in the motion 
 # of a projectile leaving a tube at a fixed height and angle.
 
+'''This program is different to Bouncers 1 and 2 in that it allows the user to set the
+number of restitutions, thetas and h2s to use.'''
 
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+from random import sample
+
+n_theta = 50 #Number of theta values needed
+n_h2 = 50 #Number of h2 values needed
+n_e = 50 #Number of restitution values needed
+
 
 #Length of tube (in m)
 l = 1
@@ -16,25 +24,31 @@ l = 1
 g = 9.81
 
 #Angle of tube & uncertainty
-theta = 36
-theta_unc = 0.5
+theta = 36 * math.pi/180
+theta_unc = 0.5  * math.pi/180
 
 #Possible thetas, in radians
-thetas = [(theta - theta_unc)*math.pi/180, (theta)*math.pi/180, (theta + theta_unc)*math.pi/180]
+thetas = []
+for x in range(n_theta):
+    thetas.append(theta - theta_unc + x * (theta_unc * 2 / (n_theta - 1)))
 
 #Height of base of tube & uncertainty
 h2 = 0.678
 h2_unc = 0.0005
 
 #Possible h2s
-h2s = [h2 - h2_unc, h2, h2 + h2_unc]
+h2s = []
+for x in range(n_h2):
+    h2s.append(h2 - h2_unc + x * (h2_unc * 2 / (n_h2 - 1)))
 
 #Coefficient of Restitution & uncertainty
 e = 0.6557
 e_unc = 0.02
 
 #Possible es
-es = [e - e_unc, e, e + e_unc]
+es = []
+for x in range(n_e):
+    es.append(e - e_unc + x * (e_unc * 2 / (n_h2 - 1)))
 
 #Initialise vectors (for definitions see diagram in main report)
 vs = []     #All possible V
@@ -87,10 +101,13 @@ for theta in thetas:
 
 #Stores the actual number of possibilities:
 num_Ds = len(Ds)
-#This number is over 177,000. Plotting all of these is pointless
 
 #If any D values are to be excluded from the plot, slice Ds list here.
-new_Ds = Ds
+try:
+    new_Ds = sample(Ds, 200)
+
+except:
+    new_Ds = Ds
 
 #Stores the plotted number of possibilities:
 num_nDs = len(new_Ds)
@@ -108,7 +125,7 @@ plt.tick_params(axis='y', which='both', left=False, right=False, labelleft=False
 plt.vlines(1.79917, 0, 2, colors='k', linestyles='dashed', linewidth=0.5)
 plt.annotate('Calculated Value,\nD=1.799m', (1.79917+0.001, 0.95), size=7)
 plt.legend([str(num_nDs) + ' points of ' + str(num_Ds) + ' possible points shown.'])
-plt.savefig('Bouncer2 Uncertainty.png', dpi=300)
+plt.savefig('Bouncer3 Uncertainty.png', dpi=300)
 plt.show()
 
 #Creates a table summarising inaccuracy
@@ -127,5 +144,5 @@ table = [
 table = plt.table(cellText=table, loc='center')
 plt.axis('off')
 table.scale(1, 2)
-plt.savefig('Bouncer2 Table.png', dpi=300)
+plt.savefig('Bouncer3 Table.png', dpi=300)
 plt.show()
